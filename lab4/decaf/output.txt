@@ -1,0 +1,559 @@
+class C {
+  int aggregator;
+  int i;
+  int sum (int a, int b)
+  {
+    return (a + b);
+  }
+  float avg (float a, float b, float c, float d, float e)
+  {
+    float temp = ((((a + b) + c) + d) + e);
+    return (temp / 5);
+  }
+  char theFirstChar (char a, char b)
+  {
+    return a;
+  }
+  void w_printIndex ()
+  {
+    print("Printing value of i: ");
+    print(i);
+    i = (+ i);
+  }
+  void w_aggregateIndex ()
+  {
+    aggregator = (aggregator + i);
+    i = (+ i);
+  }
+  bool tripleInvert (bool invertThing)
+  {
+    return (~ (~ (~ invertThing)));
+  }
+  int tripleIncrementAndMultiply (int a, int b)
+  {
+    a = (+ (+ (+ a)));
+    b = (+ (+ (+ b)));
+    return (a * b);
+  }
+  bool inAscendingOrder (float a, float b, float c, float d, float e)
+  {
+    bool aLessThanB = (a < b);
+    bool bLessThanC = (~ (b >= c));
+    bool cGreaterEqualD = (~ (~ (c >= d)));
+    bool cLessThanD = (~ cGreaterEqualD);
+    bool dLessThanE = (d < e);
+    print(" ");
+    if aLessThanB
+      print("A<B");
+    else
+      print("A>=B");
+    fi
+    if bLessThanC
+      print("B<C");
+    else
+      print("B>=C");
+    fi
+    if cLessThanD
+      print("C<D");
+    else
+      print("C>=D");
+    fi
+    if dLessThanE
+      print("D<E");
+    else
+      print("D>=E");
+    fi
+    return (((aLessThanB && bLessThanC) && cLessThanD) && dLessThanE);
+  }
+  void doTheRest ()
+  {
+    char a;
+    char b;
+    char c;
+    char d;
+    int i1;
+    int i2;
+    read(a,b,c,d);
+    print("Letters");
+    print(a,b,c,d);
+    print(" ");
+    print("Testing another while loop");
+    i = 0;
+    while (i < 6)
+      w_printIndex();
+    print(" ");
+    print("Aggregating i values 0 through 9");
+    i = 0;
+    while (i < 10)
+      w_aggregateIndex();
+    print(aggregator);
+    print(" ");
+    print("Aggregating i values 0 through 99");
+    i = 0;
+    aggregator = 0;
+    while (i < 100)
+      w_aggregateIndex();
+    print(aggregator);
+    print(" ");
+    print("Average of aggregator with 5,6,7, and 8.5");
+    print(avg(aggregator,5,6,7,8.50));
+    print(" ");
+    print("PEMDAS TEST 55*34+3/12+(43/4+1787)");
+    print((((55 * 34) + (3 / 12)) + ((43 / 4) + 1787)));
+    print("PEMDAS TEST 765+3464*34");
+    print((765 + (3464 * 34)));
+    print("PEMDAS TEST 765*3464+34");
+    print(((765 * 3464) + 34));
+    print(" ");
+    print("Printing the first char");
+    print(a);
+    print(theFirstChar(a,d));
+    print(" ");
+    print("Triple invert 'false'");
+    print(false);
+    print(tripleInvert(false));
+    print(" ");
+    print("Triple invert 'true'");
+    print(true);
+    print(tripleInvert(true));
+    print(" ");
+    print("Triple increment then multiply input values");
+    read(i1,i2);
+    print(i1,i2);
+    print(tripleIncrementAndMultiply(i1,i2));
+    print(" ");
+    print("Again but with prior values subtracted by 10");
+    print((i1 - 10),(i2 - 10));
+    print(tripleIncrementAndMultiply((i1 - 10),(i2 - 10)));
+  }
+  void main ()
+  {
+    int a;
+    int b;
+    int c;
+    int d;
+    int e;
+    read(a,b);
+    print("Sum of a and b");
+    print(sum(a,b));
+    print(" ");
+    read(a,b,c,d,e);
+    print("Average of a, b, c, d, and e");
+    print(avg(a,b,c,d,e));
+    print(" ");
+    print("Testing a while loop");
+    i = 0;
+    while (i < 15)
+      w_printIndex();
+    print(" ");
+    print("Numbers:");
+    print(a,b,c,d,e);
+    print(inAscendingOrder(a,b,c,d,e));
+    print(" ");
+    print("Numbers:");
+    print(a,c,b,e,d);
+    print(inAscendingOrder(a,c,b,e,d));
+    read(a,b,c,d,e);
+    print(" ");
+    print("Numbers:");
+    print(a,b,c,d,e);
+    print(inAscendingOrder(a,b,c,d,e));
+    print(" ");
+    print("Numbers:");
+    print(a,c,b,e,d);
+    print(inAscendingOrder(a,c,b,e,d));
+    print(" ");
+  {
+    int a = 86;
+    print("Internal A");
+    print(a);
+  }
+    print("External A");
+    print(a);
+    print(" ");
+    doTheRest();
+  }
+};
+
+
+NameTable(0)
+ScopeLevel: 0
+  class: C:class scope#: 1
+
+NameTable(1)
+ScopeLevel: 1
+  variable: aggregator type: int initialvalue: 0
+  variable: i type: int initialvalue: 0
+  method: sum:method type: (int*int)->int scope# 2
+    statements:
+      return (a + b);
+  method: avg:method type: (float*float*float*float*float)->float scope# 3
+    statements:
+      return (temp / ((float) 5));
+  method: theFirstChar:method type: (char*char)->char scope# 4
+    statements:
+      return a;
+  method: w_printIndex:method type: ()->void scope# 5
+    statements:
+      print("Printing value of i: ");
+      print(i);
+      i = (+ i);
+  method: w_aggregateIndex:method type: ()->void scope# 6
+    statements:
+      aggregator = (aggregator + i);
+      i = (+ i);
+  method: tripleInvert:method type: (bool)->bool scope# 7
+    statements:
+      return (~ (~ (~ invertThing)));
+  method: tripleIncrementAndMultiply:method type: (int*int)->int scope# 8
+    statements:
+      a = (+ (+ (+ a)));
+      b = (+ (+ (+ b)));
+      return (a * b);
+  method: inAscendingOrder:method type: (float*float*float*float*float)->bool scope# 9
+    statements:
+      print(" ");
+      if aLessThanB
+        print("A<B");
+      else
+        print("A>=B");
+      fi
+      if bLessThanC
+        print("B<C");
+      else
+        print("B>=C");
+      fi
+      if cLessThanD
+        print("C<D");
+      else
+        print("C>=D");
+      fi
+      if dLessThanE
+        print("D<E");
+      else
+        print("D>=E");
+      fi
+      return (((aLessThanB && bLessThanC) && cLessThanD) && dLessThanE);
+  method: doTheRest:method type: ()->void scope# 10
+    statements:
+      read(a,b,c,d);
+      print("Letters");
+      print(a,b,c,d);
+      print(" ");
+      print("Testing another while loop");
+      i = 0;
+      while (i < 6)
+        w_printIndex();
+      print(" ");
+      print("Aggregating i values 0 through 9");
+      i = 0;
+      while (i < 10)
+        w_aggregateIndex();
+      print(aggregator);
+      print(" ");
+      print("Aggregating i values 0 through 99");
+      i = 0;
+      aggregator = 0;
+      while (i < 100)
+        w_aggregateIndex();
+      print(aggregator);
+      print(" ");
+      print("Average of aggregator with 5,6,7, and 8.5");
+      print(avg(aggregator,5,6,7,8.50));
+      print(" ");
+      print("PEMDAS TEST 55*34+3/12+(43/4+1787)");
+      print((((55 * 34) + (3 / 12)) + ((43 / 4) + 1787)));
+      print("PEMDAS TEST 765+3464*34");
+      print((765 + (3464 * 34)));
+      print("PEMDAS TEST 765*3464+34");
+      print(((765 * 3464) + 34));
+      print(" ");
+      print("Printing the first char");
+      print(a);
+      print(theFirstChar(a,d));
+      print(" ");
+      print("Triple invert 'false'");
+      print(false);
+      print(tripleInvert(false));
+      print(" ");
+      print("Triple invert 'true'");
+      print(true);
+      print(tripleInvert(true));
+      print(" ");
+      print("Triple increment then multiply input values");
+      read(i1,i2);
+      print(i1,i2);
+      print(tripleIncrementAndMultiply(i1,i2));
+      print(" ");
+      print("Again but with prior values subtracted by 10");
+      print((i1 - 10),(i2 - 10));
+      print(tripleIncrementAndMultiply((i1 - 10),(i2 - 10)));
+  method: main:method type: ()->void scope# 11
+    statements:
+      read(a,b);
+      print("Sum of a and b");
+      print(sum(a,b));
+      print(" ");
+      read(a,b,c,d,e);
+      print("Average of a, b, c, d, and e");
+      print(avg(a,b,c,d,e));
+      print(" ");
+      print("Testing a while loop");
+      i = 0;
+      while (i < 15)
+        w_printIndex();
+      print(" ");
+      print("Numbers:");
+      print(a,b,c,d,e);
+      print(inAscendingOrder(a,b,c,d,e));
+      print(" ");
+      print("Numbers:");
+      print(a,c,b,e,d);
+      print(inAscendingOrder(a,c,b,e,d));
+      read(a,b,c,d,e);
+      print(" ");
+      print("Numbers:");
+      print(a,b,c,d,e);
+      print(inAscendingOrder(a,b,c,d,e));
+      print(" ");
+      print("Numbers:");
+      print(a,c,b,e,d);
+      print(inAscendingOrder(a,c,b,e,d));
+      print(" ");
+    {
+      int a = 86;
+      print("Internal A");
+      print(a);
+    }
+      print("External A");
+      print(a);
+      print(" ");
+      doTheRest();
+
+NameTable(2)
+ScopeLevel: 2
+  variable: a type: int initialvalue: none
+  variable: b type: int initialvalue: none
+
+NameTable(3)
+ScopeLevel: 2
+  variable: a type: float initialvalue: none
+  variable: b type: float initialvalue: none
+  variable: c type: float initialvalue: none
+  variable: d type: float initialvalue: none
+  variable: e type: float initialvalue: none
+  variable: temp type: float initialvalue: ((((a + b) + c) + d) + e)
+
+NameTable(4)
+ScopeLevel: 2
+  variable: a type: char initialvalue: none
+  variable: b type: char initialvalue: none
+
+NameTable(5)
+ScopeLevel: 2
+
+NameTable(6)
+ScopeLevel: 2
+
+NameTable(7)
+ScopeLevel: 2
+  variable: invertThing type: bool initialvalue: none
+
+NameTable(8)
+ScopeLevel: 2
+  variable: a type: int initialvalue: none
+  variable: b type: int initialvalue: none
+
+NameTable(9)
+ScopeLevel: 2
+  variable: a type: float initialvalue: none
+  variable: b type: float initialvalue: none
+  variable: c type: float initialvalue: none
+  variable: d type: float initialvalue: none
+  variable: e type: float initialvalue: none
+  variable: aLessThanB type: bool initialvalue: (a < b)
+  variable: bLessThanC type: bool initialvalue: (~ (b >= c))
+  variable: cGreaterEqualD type: bool initialvalue: (~ (~ (c >= d)))
+  variable: cLessThanD type: bool initialvalue: (~ cGreaterEqualD)
+  variable: dLessThanE type: bool initialvalue: (d < e)
+
+NameTable(10)
+ScopeLevel: 2
+  variable: a type: char initialvalue: ' '
+  variable: b type: char initialvalue: ' '
+  variable: c type: char initialvalue: ' '
+  variable: d type: char initialvalue: ' '
+  variable: i1 type: int initialvalue: 0
+  variable: i2 type: int initialvalue: 0
+
+NameTable(11)
+ScopeLevel: 2
+  variable: a type: int initialvalue: 0
+  variable: b type: int initialvalue: 0
+  variable: c type: int initialvalue: 0
+  variable: d type: int initialvalue: 0
+  variable: e type: int initialvalue: 0
+
+NameTable(12)
+ScopeLevel: 3
+  variable: a type: int initialvalue: 86
+
+---------------------------------------------------- (input.txt)
+37 45
+15 32 24 87 66
+1 2 3 4 5
+q h z l
+5 6
+---------------------------------------------------- (OUTPUT)
+Sum of a and b
+82
+ 
+Average of a, b, c, d, and e
+44.80
+ 
+Testing a while loop
+Printing value of i: 
+0
+Printing value of i: 
+1
+Printing value of i: 
+2
+Printing value of i: 
+3
+Printing value of i: 
+4
+Printing value of i: 
+5
+Printing value of i: 
+6
+Printing value of i: 
+7
+Printing value of i: 
+8
+Printing value of i: 
+9
+Printing value of i: 
+10
+Printing value of i: 
+11
+Printing value of i: 
+12
+Printing value of i: 
+13
+Printing value of i: 
+14
+ 
+Numbers:
+15
+32
+24
+87
+66
+ 
+A<B
+B>=C
+C<D
+D>=E
+false
+ 
+Numbers:
+15
+24
+32
+66
+87
+ 
+A<B
+B<C
+C<D
+D<E
+true
+ 
+Numbers:
+1
+2
+3
+4
+5
+ 
+A<B
+B<C
+C<D
+D<E
+true
+ 
+Numbers:
+1
+3
+2
+5
+4
+ 
+A<B
+B>=C
+C<D
+D>=E
+false
+ 
+Internal A
+86
+External A
+1
+ 
+Letters
+q
+h
+z
+l
+ 
+Testing another while loop
+Printing value of i: 
+0
+Printing value of i: 
+1
+Printing value of i: 
+2
+Printing value of i: 
+3
+Printing value of i: 
+4
+Printing value of i: 
+5
+ 
+Aggregating i values 0 through 9
+45
+ 
+Aggregating i values 0 through 99
+4950
+ 
+Average of aggregator with 5,6,7, and 8.5
+995.30
+ 
+PEMDAS TEST 55*34+3/12+(43/4+1787)
+3667
+PEMDAS TEST 765+3464*34
+118541
+PEMDAS TEST 765*3464+34
+2649994
+ 
+Printing the first char
+q
+q
+ 
+Triple invert 'false'
+false
+true
+ 
+Triple invert 'true'
+true
+false
+ 
+Triple increment then multiply input values
+5
+6
+72
+ 
+Again but with prior values subtracted by 10
+-5
+-4
+2

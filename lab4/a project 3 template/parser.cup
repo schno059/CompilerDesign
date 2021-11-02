@@ -1,0 +1,323 @@
+// definition of tokens, if applicable with token type 
+
+import java_cup.runtime.*;
+import java.util.*;
+
+parser code {:
+  public void syntax_error(Symbol currToken) {
+    System.err.println("Syntax error for " + sym.terminalNames[currToken.sym] + " at Line " + String.valueOf(Integer.valueOf(currToken.left)+1) + " and Character " + String.valueOf(Integer.valueOf(currToken.right)+1) + "\n");
+  }
+:}
+
+terminal MINUS;
+terminal PLUS;
+terminal TIMES;
+terminal DIV;
+terminal UMINUS;
+terminal UPLUS;
+terminal LESSTHAN;
+terminal GREATERTHAN;
+terminal LESSEQUAL;
+terminal GREATEREQUAL;
+terminal EQUALEQUAL;
+terminal NOTEQUAL;
+terminal LOR;
+terminal LAND;
+terminal LNOT;
+terminal QMARK;
+terminal COLON;
+terminal PERIOD;
+
+terminal ASSIGN;
+terminal COMMA;
+terminal SEMI;
+terminal LPAR;
+terminal RPAR;
+terminal LCURLY;
+terminal RCURLY;
+terminal LSQUARE;
+terminal RSQUARE;
+terminal INCREMENT;
+terminal DECREMENT;
+
+terminal CLASS;
+terminal FINAL;
+terminal INT;
+terminal CHAR;
+terminal FLOAT;
+terminal STRING;
+terminal BOOL;
+terminal VOID;
+terminal IF;
+terminal ELSE;
+terminal FI;
+terminal WHILE;
+terminal RETURN;
+terminal PRINT;
+terminal PRINTLINE;
+terminal READ;
+
+terminal String IDENT;
+terminal String INTLIT;
+terminal String CHARLIT;
+terminal String FLOATLIT;
+terminal String STRINGLIT;
+terminal String BOOLLIT;
+
+non terminal ASTClass  program;
+non terminal ASTListOfDecls fieldormethoddecls;
+non terminal ASTListOfDecls methoddecls;
+non terminal ASTStmtCodeBlock fielddeclorstmt;
+non terminal ASTStmtCodeBlock stmts;
+non terminal ASTStmt stmt;
+non terminal optionalsemi;
+non terminal Boolean optionalfinal;
+non terminal Integer decltype;
+non terminal ASTExpr expression;
+non terminal ArrayList<ASTExpr> expressionlist;
+non terminal ASTExpr optionalexpression;
+non terminal ArrayList<ASTDeclArg> argdecllist;
+
+// precedences, left associativity
+precedence left LOR;
+precedence left LAND;
+precedence left EQUALEQUAL, NOTEQUAL;
+precedence left LESSTHAN, GREATERTHAN, LESSEQUAL, GREATEREQUAL;
+precedence left MINUS, PLUS;
+precedence left TIMES, DIV;
+precedence left UMINUS, UPLUS, LNOT;
+
+program ::= CLASS IDENT:i LCURLY fieldormethoddecls:d RCURLY SEMI
+            {: RESULT = new ASTClass(i,d); :}
+            ;
+
+fieldormethoddecls ::= 
+            FINAL decltype:t IDENT:v ASSIGN expression:e SEMI fieldormethoddecls:d
+              {: d.add((ASTDecl) new ASTDeclVar(true,t,v,e)); RESULT = d; :}
+            | decltype:t IDENT:v optionalexpression:e SEMI fieldormethoddecls:d
+              {: d.add((ASTDecl) new ASTDeclVar(false,t,v,e)); RESULT = d; :}
+            | decltype:t IDENT:v LSQUARE INTLIT:s RSQUARE SEMI fieldormethoddecls:d
+              {: d.add((ASTDecl) new ASTDeclArray(t,v,s)); RESULT = d; :}
+            | IDENT:t IDENT:v optionalexpression:e SEMI fieldormethoddecls:d
+              {: d.add((ASTDecl) new ASTDeclVar(false,t,v,e)); RESULT = d; :}
+            | IDENT:t IDENT:v LSQUARE INTLIT:s RSQUARE SEMI fieldormethoddecls:d
+              {: d.add((ASTDecl) new ASTDeclArray(t,v,s)); RESULT = d; :}
+            | decltype:t IDENT:v LPAR RPAR LCURLY fielddeclorstmt:b RCURLY optionalsemi methoddecls:d
+              {: d.add((ASTDecl) new ASTDeclMethod(t,v,new ArrayList<ASTDeclArg>(),b)); RESULT = d; :}
+            | decltype:t IDENT:v LPAR argdecllist:a RPAR LCURLY fielddeclorstmt:b RCURLY optionalsemi methoddecls:d
+              {: d.add((ASTDecl) new ASTDeclMethod(t,v,a,b)); RESULT = d; :}
+            | VOID IDENT:v LPAR RPAR LCURLY fielddeclorstmt:b RCURLY optionalsemi methoddecls:d
+              {: d.add((ASTDecl) new ASTDeclMethod(sym.VOID,v,new ArrayList<ASTDeclArg>(),b)); RESULT = d; :}
+            | VOID IDENT:v LPAR argdecllist:a RPAR LCURLY fielddeclorstmt:b RCURLY optionalsemi methoddecls:d
+              {: d.add((ASTDecl) new ASTDeclMethod(sym.VOID,v,a,b)); RESULT = d; :}
+            | IDENT:t IDENT:v LPAR RPAR LCURLY fielddeclorstmt:b RCURLY optionalsemi methoddecls:d
+              {: d.add((ASTDecl) new ASTDeclMethod(t,v,new ArrayList<ASTDeclArg>(),b)); RESULT = d; :}
+            | IDENT:t IDENT:v LPAR argdecllist:a RPAR LCURLY fielddeclorstmt:b RCURLY optionalsemi methoddecls:d
+              {: d.add((ASTDecl) new ASTDeclMethod(t,v,a,b)); RESULT = d; :}
+            | 
+              {: RESULT = new ASTListOfDecls(); :}
+            ;
+
+methoddecls ::= 
+              decltype:t IDENT:v LPAR RPAR LCURLY fielddeclorstmt:b RCURLY optionalsemi methoddecls:d
+              {: d.add((ASTDecl) new ASTDeclMethod(t,v,new ArrayList<ASTDeclArg>(),b)); RESULT = d; :}
+            | decltype:t IDENT:v LPAR argdecllist:a RPAR LCURLY fielddeclorstmt:b RCURLY optionalsemi methoddecls:d
+              {: d.add((ASTDecl) new ASTDeclMethod(t,v,a,b)); RESULT = d; :}
+            | VOID IDENT:v LPAR RPAR LCURLY fielddeclorstmt:b RCURLY optionalsemi methoddecls:d
+              {: d.add((ASTDecl) new ASTDeclMethod(sym.VOID,v,new ArrayList<ASTDeclArg>(),b)); RESULT = d; :}
+            | VOID IDENT:v LPAR argdecllist:a RPAR LCURLY fielddeclorstmt:b RCURLY optionalsemi methoddecls:d
+              {: d.add((ASTDecl) new ASTDeclMethod(sym.VOID,v,a,b)); RESULT = d; :}
+            | IDENT:t IDENT:v LPAR RPAR LCURLY fielddeclorstmt:b RCURLY optionalsemi methoddecls:d
+              {: d.add((ASTDecl) new ASTDeclMethod(t,v,new ArrayList<ASTDeclArg>(),b)); RESULT = d; :}
+            | IDENT:t IDENT:v LPAR argdecllist:a RPAR LCURLY fielddeclorstmt:b RCURLY optionalsemi methoddecls:d
+              {: d.add((ASTDecl) new ASTDeclMethod(t,v,a,b)); RESULT = d; :}
+            | 
+              {: RESULT = new ASTListOfDecls(); :}
+            ;
+
+fielddeclorstmt ::= 
+            FINAL decltype:t IDENT:v ASSIGN expression:e SEMI fielddeclorstmt:b
+              {: b.addDecl((ASTDecl) new ASTDeclVar(true,t,v,e)); RESULT = b; :}
+            | decltype:t IDENT:v optionalexpression:e SEMI fielddeclorstmt:b
+              {: b.addDecl((ASTDecl) new ASTDeclVar(false,t,v,e)); RESULT = b; :}
+            | decltype:t IDENT:v LSQUARE INTLIT:s RSQUARE SEMI fielddeclorstmt:b 
+              {: b.addDecl((ASTDecl) new ASTDeclArray(t,v,s)); RESULT = b; :}
+            | IDENT:t IDENT:v optionalexpression:e SEMI fielddeclorstmt:b
+              {: b.addDecl((ASTDecl) new ASTDeclVar(false,t,v,e)); RESULT = b; :}
+            | IDENT:t IDENT:v LSQUARE INTLIT:s RSQUARE SEMI fielddeclorstmt:b
+              {: b.addDecl((ASTDecl) new ASTDeclArray(t,v,s)); RESULT = b; :}
+            | stmt:s stmts:b 
+              {: b.addStmt(s); RESULT = b; :}
+            | {: RESULT = new ASTStmtCodeBlock(); :}
+            ;
+
+stmts ::=   stmt:s stmts:b
+            {: b.addStmt(s); RESULT = b; :}
+            | {: RESULT = new ASTStmtCodeBlock(); :}
+            ;
+
+stmt ::=    IF LPAR expression:e RPAR stmt:ts ELSE stmt:es FI
+              {: RESULT = (ASTStmt) new ASTStmtIf(e,ts,es); :}
+            | IF LPAR expression:e RPAR stmt:ts FI
+              {: RESULT = (ASTStmt) new ASTStmtIf(e,ts,null); :}
+            | WHILE LPAR expression:e RPAR stmt:s
+              {: RESULT = (ASTStmt) new ASTStmtWhile(e,s); :}
+            | IDENT:v ASSIGN expression:e SEMI 
+              {: RESULT = (ASTStmt) new ASTStmtAssign(v,null,e); :}
+            | IDENT:v LSQUARE expression:a RSQUARE ASSIGN expression:e SEMI
+              {: RESULT = (ASTStmt) new ASTStmtAssign(v,a,e); :}
+            | IDENT:m LPAR RPAR SEMI
+              {: RESULT = (ASTStmt) new ASTStmtMethodCall(m,new ArrayList<ASTExpr>()); :}
+            | IDENT:c PERIOD IDENT:m LPAR RPAR SEMI
+              {: RESULT = (ASTStmt) new ASTStmtMethodCall(c,m,new ArrayList<ASTExpr>()); :}
+            | IDENT:m LPAR expressionlist:e RPAR SEMI
+              {: RESULT = (ASTStmt) new ASTStmtMethodCall(m,e); :}
+            | IDENT:c PERIOD IDENT:m LPAR expressionlist:e RPAR SEMI
+              {: RESULT = (ASTStmt) new ASTStmtMethodCall(c,m,e); :}
+            | IDENT:v INCREMENT SEMI
+              {: RESULT = (ASTStmt) new ASTStmtUpdate(sym.INCREMENT,null,v,null); :}
+            | IDENT:v DECREMENT SEMI
+              {: RESULT = (ASTStmt) new ASTStmtUpdate(sym.DECREMENT,null,v,null); :}
+            | IDENT:c PERIOD IDENT:v INCREMENT SEMI
+              {: RESULT = (ASTStmt) new ASTStmtUpdate(sym.INCREMENT,c,v,null); :}
+            | IDENT:c PERIOD IDENT:v DECREMENT SEMI
+              {: RESULT = (ASTStmt) new ASTStmtUpdate(sym.DECREMENT,c,v,null); :}
+            | IDENT:v LSQUARE expression:e RSQUARE INCREMENT SEMI
+              {: RESULT = (ASTStmt) new ASTStmtUpdate(sym.INCREMENT,null,v,e); :}
+            | IDENT:v LSQUARE expression:e RSQUARE DECREMENT SEMI
+              {: RESULT = (ASTStmt) new ASTStmtUpdate(sym.DECREMENT,null,v,e); :}
+            | IDENT:c PERIOD IDENT:v LSQUARE expression:e RSQUARE INCREMENT SEMI
+              {: RESULT = (ASTStmt) new ASTStmtUpdate(sym.INCREMENT,c,v,e); :}
+            | IDENT:c PERIOD IDENT:v LSQUARE expression:e RSQUARE DECREMENT SEMI
+              {: RESULT = (ASTStmt) new ASTStmtUpdate(sym.DECREMENT,c,v,e); :}
+            | RETURN SEMI
+              {: RESULT = (ASTStmt) new ASTStmtReturn(null); :}
+            | RETURN expression:e SEMI
+              {: RESULT = (ASTStmt) new ASTStmtReturn(e); :}
+            | PRINT LPAR expressionlist:e RPAR SEMI
+              {: RESULT = (ASTStmt) new ASTStmtPrint(e,null); :}
+            | PRINTLINE LPAR RPAR SEMI
+              {: RESULT = (ASTStmt) new ASTStmtPrint(null,"\n"); :}
+            | PRINTLINE LPAR expressionlist:e RPAR SEMI
+              {: RESULT = (ASTStmt) new ASTStmtPrint(e,"\n"); :}
+            | READ LPAR expressionlist:e RPAR SEMI
+              {: RESULT = (ASTStmt) new ASTStmtRead(e); :}
+            | LCURLY fielddeclorstmt:b RCURLY optionalsemi
+              {: RESULT = (ASTStmt) b; :}
+            ;
+
+optionalfinal ::= FINAL {: RESULT = true; :}
+                  | {: RESULT = false; :}
+                  ;
+
+decltype ::= INT {: RESULT = sym.INT; :}
+             | CHAR {: RESULT = sym.CHAR; :}
+             | FLOAT {: RESULT = sym.FLOAT; :}
+             | STRING {: RESULT = sym.STRING; :}
+             | BOOL {: RESULT = sym.BOOL; :}
+             ;
+
+optionalsemi ::= SEMI | ;
+
+optionalexpression ::= ASSIGN expression:e {: RESULT = e; :} | {: RESULT = null; :} ;
+
+expression ::= INTLIT:i
+                 {: RESULT = (ASTExpr) new ASTExprLitInt(i); :}
+               | FLOATLIT:f
+                 {: RESULT = (ASTExpr) new ASTExprLitFloat(f); :}
+               | CHARLIT:c
+                 {: RESULT = (ASTExpr) new ASTExprLitChar(c); :}
+               | STRINGLIT:s
+                 {: RESULT = (ASTExpr) new ASTExprLitString(s); :}
+               | BOOLLIT:b
+                 {: RESULT = (ASTExpr) new ASTExprLitBool(b); :}
+               | IDENT:i
+                 {: RESULT = (ASTExpr) new ASTExprVarRef(i); :}
+               | IDENT:i LSQUARE expression:e RSQUARE
+                 {: RESULT = (ASTExpr) new ASTExprArrayRef(i,e); :}
+               | IDENT:c PERIOD IDENT:f
+                 {: RESULT = (ASTExpr) new ASTExprClassFieldRef(c,f); :}
+               | IDENT:c PERIOD IDENT:f LSQUARE expression:e RSQUARE
+                 {: RESULT = (ASTExpr) new ASTExprClassArrayRef(c,f,e); :}
+               | IDENT:m LPAR RPAR
+                 {: RESULT = (ASTExpr) new ASTExprMethodCall(m,new ArrayList<ASTExpr>()); :}
+               | IDENT:c PERIOD IDENT:m LPAR RPAR
+                 {: RESULT = (ASTExpr) new ASTExprMethodCall(c,m,new ArrayList<ASTExpr>()); :}
+               | IDENT:m LPAR expressionlist:e RPAR
+                 {: RESULT = (ASTExpr) new ASTExprMethodCall(m,e); :}
+               | IDENT:c PERIOD IDENT:m LPAR expressionlist:e RPAR
+                 {: RESULT = (ASTExpr) new ASTExprMethodCall(c,m,e); :}
+               | LPAR expression:e RPAR
+                 {: RESULT = e; :}
+               | LPAR decltype:t RPAR expression:e
+                 {: RESULT = (ASTExpr) new ASTExprCast(t,e); :}
+               | MINUS expression:e                
+                 {: RESULT = new ASTExprUnary(sym.UMINUS,e); :} %prec UMINUS
+               | PLUS expression:e                
+                 {: RESULT = new ASTExprUnary(sym.UPLUS,e); :} %prec UPLUS
+               | LNOT expression:e                
+                 {: RESULT = new ASTExprUnary(sym.LNOT,e); :}
+               | expression:l PLUS expression:r
+                 {: RESULT = new ASTExprBinary(l,sym.PLUS,r); :}
+               | expression:l MINUS expression:r
+                 {: RESULT = new ASTExprBinary(l,sym.MINUS,r); :}
+               | expression:l TIMES expression:r
+                 {: RESULT = new ASTExprBinary(l,sym.TIMES,r); :}
+               | expression:l DIV expression:r
+                 {: RESULT = new ASTExprBinary(l,sym.DIV,r); :}
+               | expression:l LESSTHAN expression:r
+                 {: RESULT = new ASTExprBinary(l,sym.LESSTHAN,r); :}
+               | expression:l GREATERTHAN expression:r
+                 {: RESULT = new ASTExprBinary(l,sym.GREATERTHAN,r); :}
+               | expression:l LESSEQUAL expression:r
+                 {: RESULT = new ASTExprBinary(l,sym.LESSEQUAL,r); :}
+               | expression:l GREATEREQUAL expression:r
+                 {: RESULT = new ASTExprBinary(l,sym.GREATEREQUAL,r); :}
+               | expression:l EQUALEQUAL expression:r
+                 {: RESULT = new ASTExprBinary(l,sym.EQUALEQUAL,r); :}
+               | expression:l NOTEQUAL expression:r
+                 {: RESULT = new ASTExprBinary(l,sym.NOTEQUAL,r); :}
+               | expression:l LOR expression:r
+                 {: RESULT = new ASTExprBinary(l,sym.LOR,r); :}
+               | expression:l LAND expression:r
+                 {: RESULT = new ASTExprBinary(l,sym.LAND,r); :}
+               | LPAR expression:e1 QMARK expression:e2 COLON expression:e3 RPAR
+                 {: RESULT = new ASTExprTrinary(e1,e2,e3); :}
+                 ;
+
+expressionlist ::= expression:e COMMA expressionlist:el 
+                 {: el.add(0,e); RESULT = el; :}
+               | expression:e
+                 {: ArrayList<ASTExpr> el = new ArrayList<ASTExpr>(); el.add(0,e); RESULT = el; :}
+               ;
+             
+
+argdecllist ::= decltype:t IDENT:n COMMA argdecllist:l
+                 {: l.add(0,new ASTDeclArg(t,n,false)); 
+                    RESULT = l; :}
+               | IDENT:t IDENT:n COMMA argdecllist:l
+                 {: l.add(0,new ASTDeclArg(t,n,false)); 
+                    RESULT = l; :}
+               | decltype:t IDENT:n LSQUARE RSQUARE COMMA argdecllist:l
+                 {: l.add(0,new ASTDeclArg(t,n,true)); 
+                    RESULT = l; :}
+               | IDENT:t IDENT:n LSQUARE RSQUARE COMMA argdecllist:l
+                 {: l.add(0,new ASTDeclArg(t,n,true)); 
+                    RESULT = l; :}
+               | decltype:t IDENT:n
+                 {: ArrayList<ASTDeclArg> l = new ArrayList<ASTDeclArg>();
+                    l.add(0,new ASTDeclArg(t,n,false));
+                    RESULT = l; :}
+               | IDENT:t IDENT:n
+                 {: ArrayList<ASTDeclArg> l = new ArrayList<ASTDeclArg>();
+                    l.add(0,new ASTDeclArg(t,n,false));
+                    RESULT = l; :}
+               | decltype:t IDENT:n LSQUARE RSQUARE
+                 {: ArrayList<ASTDeclArg> l = new ArrayList<ASTDeclArg>();
+                    l.add(0,new ASTDeclArg(t,n,true));
+                    RESULT = l; :}
+               | IDENT:t IDENT:n LSQUARE RSQUARE
+                 {: ArrayList<ASTDeclArg> l = new ArrayList<ASTDeclArg>();
+                    l.add(0,new ASTDeclArg(t,n,true));
+                    RESULT = l; :}
+               ;

@@ -1,0 +1,1 @@
+This archive was based on the simpleAST example and uses basically the same makefile. I made it on the akka server so it should be able to run in a unix environment.

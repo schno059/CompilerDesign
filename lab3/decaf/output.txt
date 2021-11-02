@@ -1,0 +1,442 @@
+
+
+--------[Type Verification]--------
+
+
+'myInt' declared as type INT.
+'myFloat' declared as type FLOAT.
+'myChar' declared as type CHAR.
+'myBool' declared as type BOOL.
+'myOtherInt' is of type INT. Declared equal to '5' which is of type 'INT'. --> OK
+'myOtherFloat' is of type FLOAT. Declared equal to '7.50' which is of type 'FLOAT'. --> OK
+'myOtherChar' is of type CHAR. Declared equal to ''a'' which is of type 'CHAR'. --> OK
+'myOtherBool' is of type BOOL. Declared equal to 'false' which is of type 'BOOL'. --> OK
+'myOtherFinalInt' is of type INT. Declared equal to '= 576' which is of type 'INT'. --> OK
+'myOtherFinalFloat' is of type FLOAT. Declared equal to '= 32' which is of type 'INT'. --> OK
+'myOtherFinalChar' is of type CHAR. Declared equal to '= myFinalChar' which is of type 'FINAL_CHAR'. --> OK
+'myOtherFinalBool' is of type BOOL. Declared equal to '= 9999999' which is of type 'INT'. --> OK
+'myIntArr' declared as type INT.
+'myFloatArr' declared as type FLOAT.
+'myCharArr' declared as type CHAR.
+'myBoolArr' declared as type BOOL.
+'myOtherIntArr' declared as type INT.
+'myOtherFloatArr' declared as type FLOAT.
+'myOtherCharArr' declared as type CHAR.
+'myOtherArr' declared as type BOOL.
+'myIntFunc()' is of type INT. Returns type INT. --> OK
+'myFloatFunc()' is of type FLOAT. Returns type FLOAT. --> OK
+'myCharFunc()' is of type CHAR. Returns type CHAR. --> OK
+'myBoolFunc()' is of type BOOL. Returns type BOOL. --> OK
+'myOtherIntFunc()' is of type INT. Returns type INT. --> OK
+'myOtherFloatFunc()' is of type FLOAT. Returns type INT. --> OK
+'myOtherCharFunc()' is of type CHAR. Returns type FINAL_CHAR. --> OK
+'myOtherBoolFunc()' is of type BOOL. Returns type FINAL_INT. --> OK
+Printlist 'param1' is valid. --> OK
+Unary plus operation with myInt which is of type INT. --> OK
+'myParamFunction()' is of type INT. Returns type INT. --> OK
+Printlist 'a' is valid. --> OK
+Printlist 'b' is valid. --> OK
+Printlist 'c' is valid. --> OK
+'myOtherParamFunction()' is of type CHAR. Returns type CHAR. --> OK
+'qcInserter()' is of type FLOAT. Returns type FLOAT. --> OK
+'myParamFunction()' takes in [FLOAT,BOOL,INT,CHAR]. '5, 5, 5, 'h'' are of types [INT,INT,INT,CHAR] respectively. --> OK
+'myParamFunction()' takes in [FLOAT,BOOL,INT,CHAR]. '5, 5, 5, 'h'' are of types [INT,INT,INT,CHAR] respectively. --> OK
+'myInt' is of type INT. Declared equal to 'myParamFunction(5, 5, 5, 'h')' which is of type 'INT'. --> OK
+'myParamFunction()' takes in [FLOAT,BOOL,INT,CHAR]. '345345.12, true, 2, 'h'' are of types [FLOAT,BOOL,INT,CHAR] respectively. --> OK
+'myInt' is of type INT. 'myParamFunction(345345.12, true, 2, 'h')' is of type INT. --> OK
+'myParamFunction()' takes in [FLOAT,BOOL,INT,CHAR]. '4.12, false, 98, 'h'' are of types [FLOAT,BOOL,INT,CHAR] respectively. --> OK
+'myInt' is of type INT. 'myParamFunction(4.12, false, 98, 'h')' is of type INT. --> OK
+'paramTester()' takes in []. 'null' are of types [] respectively. --> OK
+'myParamFunction()' takes in [FLOAT,BOOL,INT,CHAR]. '4, myBool, 98, myFinalChar' are of types [INT,BOOL,INT,FINAL_CHAR] respectively. --> OK
+'paramTester()' is VOID. Has no return statement. --> OK
+'a' declared as type CHAR.
+'myLocalInt' is of type INT. Declared equal to 'myFinalInt' which is of type 'FINAL_INT'. --> OK
+'myOtherChar' is of type FLOAT. Declared equal to 'myInt' which is of type 'INT'. --> OK
+'myFinalFloat' is of type BOOL. Declared equal to 'true' which is of type 'BOOL'. --> OK
+'myOtherChar' is of type INT. Declared equal to '564' which is of type 'INT'. --> OK
+Tilde operation with ((5 > 6) < 6) which is of type BOOL. --> OK
+Printlist 'a[2]' is valid. --> OK
+While-statement contingent on '(((myOtherChar == 3) && myFinalFloat) || ~((5 > 6) < 6))' which is of type BOOL. --> OK
+Incrementing 'myLocalInt' which is of type INT. --> OK
+CHAR
+Readlist 'a[3]' is valid. --> OK
+If-statement contingent on 'myOtherChar' which is of type INT. --> OK
+'myInt' is of type INT. '5' is of type INT. --> OK
+Incrementing 'myInt' which is of type INT. --> OK
+Decrementing 'myInt' which is of type INT. --> OK
+'myFloat' is of type FLOAT. '(myOtherChar / myIntFunc)' is of type FLOAT. --> OK
+'myFloat' is of type FLOAT. '(myInt / myInt)' is of type INT. --> OK
+Unary plus operation with myInt which is of type INT. --> OK
+'myFloat' is of type FLOAT. '(((myInt + myInt) - ((myInt * myInt) / myInt)) + +myInt)' is of type INT. --> OK
+Printlist '+-~(myInt == myOtherInt)' is valid. --> OK
+'noReturn()' is VOID. Has no return statement. --> OK
+'myChar' declared as type CHAR.
+FINAL_BOOL
+FINA
+INT
+INT
+FLOAT
+FLOA
+INT
+Readlist 'myIntArr[3] , myOtherFloatArr[3] , myInt , myOtherInt , myOtherFinalBool' is valid. --> OK
+Printlist 'myOtherIntFunc' is valid. --> OK
+Printlist '(true ? 'a' : 'b')' is valid. --> OK
+Printlist '((7 ? 7 : 7) + 3.50) , "heyyyyy"' is valid. --> OK
+'myDeeeeepInt' is of type INT. Declared equal to '7' which is of type 'INT'. --> OK
+'returnNothing()' is VOID. Returns type VOID. --> OK
+'myOtherInt' is of type CHAR. Declared equal to ''c'' which is of type 'CHAR'. --> OK
+'myOtherChar' is of type CHAR. 'myOtherInt' is of type CHAR. --> OK
+Printlist '"Hello world"' is valid. --> OK
+BOOL
+Readlist 'myBool' is valid. --> OK
+'qcInserter()' takes in [FLOAT]. '+(7 ? 7 : 7)' are of types [INT] respectively. --> OK
+Incrementing 'myInt' which is of type INT. --> OK
+BOOL
+Readlist 'myBoolArr[2]' is valid. --> OK
+If-statement contingent on '3' which is of type INT. --> OK
+Decrementing 'myFloat' which is of type FLOAT. --> OK
+'myParamFunction()' takes in [FLOAT,BOOL,INT,CHAR]. '345345.12, true, 2, 'h'' are of types [FLOAT,BOOL,INT,CHAR] respectively. --> OK
+'myParamFunction()' takes in [FLOAT,BOOL,INT,CHAR]. '345345.12, true, 2, 'h'' are of types [FLOAT,BOOL,INT,CHAR] respectively. --> OK
+'myParamFunction()' takes in [FLOAT,BOOL,INT,CHAR]. '345345.12, true, 2, 'h'' are of types [FLOAT,BOOL,INT,CHAR] respectively. --> OK
+If-statement contingent on 'myParamFunction(345345.12, true, 2, 'h')' which is of type INT. --> OK
+FINAL_CHAR
+FINA
+Readlist 'myFinalChar' is valid. --> OK
+'myParamFunction()' takes in [FLOAT,BOOL,INT,CHAR]. '37643856, myBoolArr[4], 2, 'h'' are of types [INT,BOOL,INT,CHAR] respectively. --> OK
+'myParamFunction()' takes in [FLOAT,BOOL,INT,CHAR]. '37643856, myBoolArr[4], 2, 'h'' are of types [INT,BOOL,INT,CHAR] respectively. --> OK
+'myParamFunction()' takes in [FLOAT,BOOL,INT,CHAR]. '37643856, myBoolArr[4], 2, 'h'' are of types [INT,BOOL,INT,CHAR] respectively. --> OK
+While-statement contingent on 'myParamFunction(37643856, myBoolArr[4], 2, 'h')' which is of type INT. --> OK
+'main()' is VOID. Has no return statement. --> OK
+
+
+--------[Final Symbol Table]--------
+
+
+myClass=CLASS
+
+	returnNothing=FN_()_VOID
+	myParamFunction=FN_(FLOAT,BOOL,INT,CHAR)_INT
+	myCharFunc=FN_()_CHAR
+	myCharArr=CHAR[]
+	myOtherBool=BOOL
+	main=FN_()_VOID
+	myFinalChar=FINAL_CHAR
+	myOtherFinalBool=FINAL_BOOL
+	myOtherIntArr=INT[]
+	myOtherFloatFunc=FN_()_FLOAT
+	myOtherArr=BOOL[]
+	myFinalBool=FINAL_BOOL
+	noReturn=FN_()_VOID
+	myOtherFinalChar=FINAL_CHAR
+	myOtherBoolFunc=FN_()_BOOL
+	myInt=INT
+	myFloatFunc=FN_()_FLOAT
+	myFloat=FLOAT
+	myOtherParamFunction=FN_(CHAR,CHAR,CHAR)_CHAR
+	qcInserter=FN_(FLOAT)_FLOAT
+	myOtherInt=INT
+	myOtherIntFunc=FN_()_INT
+	myBoolFunc=FN_()_BOOL
+	myFinalFloat=FINAL_FLOAT
+	myChar=CHAR
+	myBoolArr=BOOL[]
+	myOtherCharFunc=FN_()_CHAR
+	myOtherFloat=FLOAT
+	myOtherFinalInt=FINAL_INT
+	myOtherFinalFloat=FINAL_FLOAT
+	myFloatArr=FLOAT[]
+	myIntFunc=FN_()_INT
+	myOtherCharArr=CHAR[]
+	myFinalInt=FINAL_INT
+	myIntArr=INT[]
+	myOtherFloatArr=FLOAT[]
+	paramTester=FN_()_VOID
+	myBool=BOOL
+	myOtherChar=CHAR
+
+
+
+
+
+
+
+
+
+		param3=INT
+		param4=CHAR
+		param1=FLOAT
+		param2=BOOL
+
+		a=CHAR
+		b=CHAR
+		c=CHAR
+
+		qc=FLOAT
+
+		myInt=INT
+
+		a=CHAR[]
+		myLocalInt=INT
+		myFinalFloat=BOOL
+		myOtherChar=FLOAT
+
+			myOtherChar=INT
+
+
+		myChar=CHAR
+
+
+
+					myDeeeeepInt=INT
+
+		myOtherInt=CHAR
+
+
+--------[Code]--------
+
+
+class myClass {
+
+int myInt;
+float myFloat;
+char myChar;
+bool myBool;
+int myOtherInt= 5;
+float myOtherFloat= 7.50;
+char myOtherChar= 'a';
+bool myOtherBool= false;
+final int myFinalInt ;
+final float myFinalFloat ;
+final char myFinalChar ;
+final bool myFinalBool ;
+final int myOtherFinalInt = 576;
+final float myOtherFinalFloat = 32;
+final char myOtherFinalChar = myFinalChar;
+final bool myOtherFinalBool = 9999999;
+int myIntArr[];
+float myFloatArr[];
+char myCharArr[];
+bool myBoolArr[];
+int myOtherIntArr[545];
+float myOtherFloatArr[334];
+char myOtherCharArr[2345];
+bool myOtherArr[23];
+
+
+int myIntFunc() {
+
+
+return 7;
+
+} ;
+
+
+
+float myFloatFunc() {
+
+
+return 3.00;
+
+} ;
+
+
+
+char myCharFunc() {
+
+
+return 'a';
+
+} ;
+
+
+
+bool myBoolFunc() {
+
+
+return true;
+
+} ;
+
+
+
+int myOtherIntFunc() {
+
+
+return myOtherInt;
+
+} ;
+
+
+
+float myOtherFloatFunc() {
+
+
+return myInt;
+
+} ;
+
+
+
+char myOtherCharFunc() {
+
+
+return myFinalChar;
+
+} ;
+
+
+
+bool myOtherBoolFunc() {
+
+
+return myFinalInt;
+
+} ;
+
+
+
+int myParamFunction(float param1, bool param2, int param3, char param4) {
+
+
+print ( param1 );
+return +myInt;
+
+} ;
+
+
+
+char myOtherParamFunction(char a, char b, char c) {
+
+
+print ( a );
+print ( b );
+print ( c );
+return b;
+
+} ;
+
+
+
+float qcInserter(float qc) {
+
+
+return qc;
+
+} 
+
+
+
+void paramTester() {
+
+int myInt= myParamFunction(5, 5, 5, 'h');
+
+myInt = myParamFunction(345345.12, true, 2, 'h');
+myInt = myParamFunction(4.12, false, 98, 'h');
+paramTester();
+myParamFunction(4, myBool, 98, myFinalChar);
+
+} ;
+
+
+
+void noReturn() {
+
+char a[4];
+int myLocalInt= myFinalInt;
+float myOtherChar= myInt;
+bool myFinalFloat= true;
+
+
+{
+int myOtherChar= 564;
+
+
+while ( (((myOtherChar == 3) && myFinalFloat) || ~((5 > 6) < 6)) )
+print ( a[2] );
+
+
+if ( myOtherChar )
+myLocalInt++;
+else
+read ( a[3] );
+fi
+
+}
+
+myInt = 5;
+myInt++;
+myInt--;
+
+{
+
+myFloat = (myOtherChar / myIntFunc);
+myFloat = (myInt / myInt);
+myFloat = (((myInt + myInt) - ((myInt * myInt) / myInt)) + +myInt);
+}
+
+print ( +-~(myInt == myOtherInt) );
+
+} ;
+
+
+
+void returnNothing() {
+
+char myChar;
+
+read ( myIntArr[3] , myOtherFloatArr[3] , myInt , myOtherInt , myOtherFinalBool );
+print ( myOtherIntFunc );
+print ( (true ? 'a' : 'b') );
+print ( ((7 ? 7 : 7) + 3.50) , "heyyyyy" );
+
+{
+
+
+{
+
+
+{
+int myDeeeeepInt= 7;
+
+}
+
+}
+
+}
+
+return;
+
+} ;
+
+
+
+void main() {
+
+char myOtherInt= 'c';
+
+myOtherChar = myOtherInt;
+print ( "Hello world" );
+read ( myBool );
+qcInserter(+(7 ? 7 : 7));
+
+if ( 3 )
+myInt++;
+else
+read ( myBoolArr[2] );
+fi
+
+
+if ( myParamFunction(345345.12, true, 2, 'h') )
+myFloat--;
+fi
+
+
+while ( myParamFunction(37643856, myBoolArr[4], 2, 'h') )
+read ( myFinalChar );
+
+
+} ;
+
+
+};
+

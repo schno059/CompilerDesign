@@ -1,0 +1,321 @@
+// definition of tokens, if applicable with token type 
+
+terminal IF;
+terminal ELSE;
+terminal FI;
+terminal WHILE;
+terminal READ;
+terminal PRINT;
+terminal PRINTLN;
+terminal RETURN;
+terminal INT;
+terminal CHAR;
+terminal BOOL;
+terminal FLOAT;
+terminal FINAL;
+terminal CLASS;
+terminal VOID;
+terminal EQUALS;
+terminal SEMI;
+terminal COMMA;
+terminal VERTICAL_BARS;
+terminal AMPERSANDS;
+terminal EQUAL_EQUAL;
+terminal LESS_THAN;
+terminal GREATER_THAN;
+terminal LESS_EQUAL;
+terminal GREATER_EQUAL;
+terminal LESS_GREATER;
+terminal DECREMENT;
+terminal INCREMENT;
+terminal MINUS;
+terminal PLUS;
+terminal QUESTION;
+terminal COLON;
+terminal TILDE;
+terminal TIMES;
+terminal DIV;
+terminal LPAR;
+terminal RPAR;
+terminal LBRAC;
+terminal RBRAC;
+terminal LSBRAC;
+terminal RSBRAC;
+
+terminal String IDENT;
+terminal String INT_LIT;
+terminal String CHAR_LIT;
+terminal String STR_LIT;
+terminal String FLOAT_LIT;
+terminal String BOOL_LIT;
+
+non terminal ProgramAST           program;
+non terminal MembersAST           members;
+non terminal MethodsAST           methods;
+non terminal MethodAST            method;
+non terminal StmtsAST             stmts;
+non terminal StmtAST              stmt;
+non terminal ExprAST              expression;
+non terminal IntAST               int_lit;
+non terminal CharAST               char_lit;
+non terminal StrAST               str_lit;
+non terminal FloatAST             float_lit;
+non terminal BoolAST              bool_lit;
+non terminal IdentAST             ident;
+non terminal NameAST              name;
+non terminal OptElseStmtAST       optelse;
+non terminal ReadListAST 		  readlist;
+non terminal PrintListAST 		  printlist;
+non terminal PrintlnListAST 	  printlnlist;
+non terminal ArgsAST 			  args;
+non terminal ArgDeclsAST 		  argdecls;
+non terminal ArgDeclAST 		  argdecl;
+non terminal OptBracsAST 		  optbracs;
+non terminal FieldAST 			  field;
+non terminal FieldsAST 		  	  fields;
+non terminal FieldPrimeAST 		  fieldprime;
+non terminal OptIntAST 			  optint;
+non terminal OptSemiAST 		  optsemi;
+non terminal OptExprAST 		  optexpression;
+non terminal TypeAST 			  type;
+
+
+// precedences, left associativity
+precedence left VERTICAL_BARS;
+precedence left AMPERSANDS;
+precedence left EQUAL_EQUAL;
+precedence left LESS_THAN, GREATER_THAN, LESS_EQUAL, GREATER_EQUAL, LESS_GREATER;
+precedence left MINUS, PLUS;
+precedence left TIMES, DIV;
+
+
+// here the rules start 
+program         ::= CLASS ident:i LBRAC members:m RBRAC SEMI
+                   {: RESULT = new ProgramAST(i,m); :}
+                 ;
+
+members         ::= fields:f methods:m
+                   {: RESULT = new MembersAST(f,m); :}
+                 ;
+
+methods         ::= method:m methods:s
+                   {: RESULT = new MethodsAST(m,s); :}
+                 |
+                   {: RESULT = new MethodsAST(); :}
+                 ;
+
+method          ::= VOID ident:i LPAR argdecls:a RPAR LBRAC fields:f stmts:s RBRAC optsemi:o
+                   {: RESULT = new MethodAST(i,a,f,s,o); :}
+                 | type:t ident:i LPAR argdecls:a RPAR LBRAC fields:f stmts:s RBRAC optsemi:o
+                   {: RESULT = new MethodAST(t,i,a,f,s,o); :}
+                 ;
+
+stmts           ::= stmt:t stmts:s
+                   {: RESULT = new StmtsAST(t,s); :}
+                 |
+                   {: RESULT = new StmtsAST(); :}
+                 ;
+
+stmt           ::= IF LPAR expression:e RPAR stmts:s optelse:o
+                   {: RESULT = new IfStmtAST(e,s,o); :}
+                 | WHILE LPAR expression:e RPAR stmt:s
+                   {: RESULT = new WhileStmtAST(e,s); :}
+                 | name:n EQUALS expression:e SEMI
+                   {: RESULT = new AssignStmtAST(n,e); :}
+                 | READ LPAR readlist:r RPAR SEMI
+                   {: RESULT = new ReadStmtAST(r); :}
+                 | PRINT LPAR printlist:p RPAR SEMI
+                   {: RESULT = new PrintStmtAST(p); :}
+                 | PRINTLN LPAR printlnlist:p RPAR SEMI
+                   {: RESULT = new PrintlnStmtAST(p); :}
+                 | ident:i LPAR RPAR SEMI
+                   {: RESULT = new IdentStmtAST(i); :}
+                 | ident:i LPAR args:a RPAR SEMI
+                   {: RESULT = new IdentStmtAST(i,a); :}
+                 | RETURN SEMI
+                   {: RESULT = new ReturnStmtAST(); :}
+                 | RETURN expression:e SEMI
+                   {: RESULT = new ReturnStmtAST(e); :}
+                 | name:n INCREMENT SEMI
+                   {: RESULT = new IncrementStmtAST(n); :}
+                 | name:n DECREMENT SEMI
+                   {: RESULT = new DecrementStmtAST(n); :}
+                 | LBRAC fields:f stmts:s RBRAC optsemi:o
+                   {: RESULT = new FieldStmtAST(f,s,o); :}
+                 ;
+
+expression     ::= name:n
+                   {: RESULT = n; :}
+                 | ident:i LPAR RPAR
+                   {: RESULT = new IdentExprAST(i); :}
+                 | ident:i LPAR args:a RPAR
+                   {: RESULT = new IdentExprAST(i,a); :}
+                 | int_lit:i
+                   {: RESULT = i; :}
+                 | char_lit:c
+                   {: RESULT = c; :}
+                 | str_lit:s
+                   {: RESULT = s; :}
+                 | float_lit:f
+                   {: RESULT = f; :}
+                 | bool_lit:b
+                   {: RESULT = b; :}
+                 | LPAR expression:e RPAR
+                   {: RESULT = e; :}
+                 | TILDE expression:e
+                   {: RESULT = new TildeExprAST(e); :}
+                 | MINUS expression:e
+                   {: RESULT = new MinusExprAST(e); :}
+                 | PLUS expression:e
+                   {: RESULT = new PlusExprAST(e); :}
+                 | LPAR type:t RPAR expression:e
+                   {: RESULT = new TypeExprAST(t,e); :}
+                 | expression:l PLUS expression:r
+                   {: RESULT = new BinaryExprAST(l,"+",r); :}
+                 | expression:l TIMES expression:r
+                   {: RESULT = new BinaryExprAST(l,"*",r); :}
+                 | expression:l DIV expression:r
+                   {: RESULT = new BinaryExprAST(l,"/",r); :}
+                 | expression:l MINUS expression:r
+                   {: RESULT = new BinaryExprAST(l,"-",r); :}
+                 | expression:l LESS_THAN expression:r
+                   {: RESULT = new BinaryExprAST(l,"<",r); :}
+                 | expression:l GREATER_THAN expression:r
+                   {: RESULT = new BinaryExprAST(l,">",r); :}
+                 | expression:l LESS_EQUAL expression:r
+                   {: RESULT = new BinaryExprAST(l,"<=",r); :}
+                 | expression:l GREATER_EQUAL expression:r
+                   {: RESULT = new BinaryExprAST(l,">=",r); :}
+                 | expression:l EQUAL_EQUAL expression:r
+                   {: RESULT = new BinaryExprAST(l,"==",r); :}
+                 | expression:l LESS_GREATER expression:r
+                   {: RESULT = new BinaryExprAST(l,"<>",r); :}
+                 | expression:l VERTICAL_BARS expression:r
+                   {: RESULT = new BinaryExprAST(l,"||",r); :}
+                 | expression:l AMPERSANDS expression:r
+                   {: RESULT = new BinaryExprAST(l,"&&",r); :}
+                 | LPAR expression:e1 QUESTION expression:e2 COLON expression:e3 RPAR
+                   {: RESULT = new QColExprAST(e1,e2,e3); :}
+                 ;
+
+int_lit        ::= INT_LIT:z
+                   {: RESULT = new IntAST(z); :}
+                 ;
+
+char_lit        ::= CHAR_LIT:z
+                   {: RESULT = new CharAST(z); :}
+                 ;
+
+str_lit        ::= STR_LIT:z
+                   {: RESULT = new StrAST(z); :}
+                 ;
+
+float_lit      ::= FLOAT_LIT:z
+                   {: RESULT = new FloatAST(z); :}
+                 ;
+
+bool_lit      ::= BOOL_LIT:z
+                   {: RESULT = new BoolAST(z); :}
+                 ;
+
+ident          ::= IDENT:n
+                   {: RESULT = new IdentAST(n); :}
+                 ;
+
+name          ::= ident:i
+                  {: RESULT = new NameAST(i); :}
+                | ident:i LSBRAC expression:e RSBRAC
+                  {: RESULT = new NameAST(i,e); :}
+                ;
+
+optelse       ::= ELSE stmt:s FI
+                  {: RESULT = new OptElseStmtAST(s); :}
+                | FI
+                  {: RESULT = new OptElseStmtAST(); :}
+                ;
+
+readlist      ::= name:n COMMA readlist:r
+                  {: RESULT = new ReadListAST(n,r); :}
+                | name:n
+                  {: RESULT = new ReadListAST(n); :}
+                ;
+
+printlist     ::= expression:e COMMA printlist:p
+                  {: RESULT = new PrintListAST(e,p); :}
+                | expression:e
+                  {: RESULT = new PrintListAST(e); :}
+                ;
+
+printlnlist   ::= 
+                  {: RESULT = new PrintlnListAST(); :}
+                ;
+
+args	  	  ::= expression:e COMMA args:a
+                  {: RESULT = new ArgsAST(e,a); :}
+                | expression:e
+                  {: RESULT = new ArgsAST(e); :}
+                ;
+
+argdecls	  ::= argdecl:a COMMA argdecls:s
+                  {: RESULT = new ArgDeclsAST(a,s); :}
+                | argdecl:a
+                  {: RESULT = new ArgDeclsAST(a); :}
+                | 
+                  {: RESULT = new ArgDeclsAST(); :}
+                ;
+
+argdecl	      ::= type:t ident:i optbracs:o
+                  {: RESULT = new ArgDeclAST(t,i,o); :}
+                ;
+
+optbracs	  ::= LSBRAC RSBRAC
+                  {: RESULT = new OptBracsAST("[]"); :}
+                |
+                  {: RESULT = new OptBracsAST(); :}
+                ;
+
+fields 	      ::= fields:s field:f
+                   {: RESULT = new FieldsAST(s,f); :}
+                 |
+                   {: RESULT = new FieldsAST(); :}
+                 ;
+
+field 	      ::= FINAL type:t ident:i optexpression:e SEMI
+                   {: RESULT = new FinalDeclAST(t,i,e); :}
+                 | type:t ident:i fieldprime:p
+                   {: RESULT = new FieldDeclAST(t,i,p); :}
+                 ;
+
+fieldprime    ::= optexpression:e SEMI
+                   {: RESULT = new FieldPrimeAST(e); :}
+                 | LSBRAC optint:o RSBRAC SEMI
+                   {: RESULT = new FieldPrimeAST(o); :}
+                 ;	
+
+optint    	  ::= int_lit:n
+                   {: RESULT = new OptIntAST(n); :}
+                 |
+                   {: RESULT = new OptIntAST(); :}
+                 ;			
+
+optexpression ::= EQUALS expression:e
+                   {: RESULT = new OptExprAST(e); :}
+                 |
+                   {: RESULT = new OptExprAST(); :}
+                 ;
+
+optsemi 	  ::= SEMI
+                   {: RESULT = new OptSemiAST(";"); :}
+                 |
+                   {: RESULT = new OptSemiAST(); :}
+                 ;
+
+type          ::= INT
+                  {: RESULT = new TypeAST("int"); :}
+                | CHAR
+                  {: RESULT = new TypeAST("char"); :}
+                | BOOL
+                  {: RESULT = new TypeAST("bool"); :}
+                | FLOAT
+                  {: RESULT = new TypeAST("float"); :}
+                ; 		

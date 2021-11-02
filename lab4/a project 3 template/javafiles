@@ -1,0 +1,15 @@
+	Main.java AST.java ASTClass.java ASTListOfDecls.java \
+	ASTDecl.java ASTDeclVar.java ASTDeclMethod.java \
+	ASTDeclArray.java ASTDeclArg.java \
+	ASTExpr.java ASTExprLitBool.java ASTExprLitChar.java \
+	ASTExprLitFloat.java ASTExprLitInt.java ASTExprLitString.java \
+	ASTExprUnary.java ASTExprBinary.java ASTExprTrinary.java \
+	ASTExprVarRef.java ASTExprArrayRef.java \
+	ASTExprClassArrayRef.java ASTExprClassFieldRef.java \
+	ASTExprCast.java ASTExprMethodCall.java \
+	ASTStmt.java ASTStmtCodeBlock.java ASTStmtAssign.java ASTStmtIf.java \
+	ASTStmtMethodCall.java ASTStmtPrint.java ASTStmtRead.java \
+	ASTStmtReturn.java ASTStmtUpdate.java ASTStmtWhile.java \
+	SymbolTable.java NameTable.java \
+	STEntry.java STClassEntry.java STVarDeclEntry.java \
+	Type.java TypeBase.java

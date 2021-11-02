@@ -1,0 +1,9 @@
+I am gonna check the symbol table
+Root[Leaf 1[The Cool Child[]], Leaf 2[]]
+
+class myClass {
+
+int a= 3;
+
+};
+
